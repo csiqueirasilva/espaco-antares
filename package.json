@@ -1,0 +1,16 @@
+{
+  "name": "sala-antares",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nw"
+  },
+  "repository": {
+    "type": "git",
+    "url": "csiqueira@daed-dev.on.br:/opt/git/sala-antares.git"
+  },
+  "author": "Caio Siqueira da Silva",
+  "license": "ISC"
+}
