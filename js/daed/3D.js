@@ -484,16 +484,24 @@
         renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
         scene.add(camera);
+		
+		$(function() {
+			var $window = $(window);
+			var width = $window.width();
+			var height = $window.height();
 
-        window.onresize = function () {
-            // RESIZE Main Screen
-            var WIDTH = element !== window ? element.offsetWidth : window.innerWidth,
-                    HEIGHT = element !== window ? element.offsetHeight : window.innerHeight;
-            camera.aspect = WIDTH / HEIGHT;
-            camera.updateProjectionMatrix();
+			setInterval(function () {
+				if ((width != $window.width()) || (height != $window.height())) {
+					width = $window.width();
+					height = $window.height();
 
-            renderer.setSize(WIDTH, HEIGHT);
-        };
+					camera.aspect = width / height;
+					camera.updateProjectionMatrix();
+
+					renderer.setSize(width, height);
+				}
+			}, 300);
+		});
 
         // controls, return camera control if any
         if (controls instanceof Function) {
