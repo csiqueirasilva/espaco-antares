@@ -33,7 +33,7 @@
         <script src="js/tween.min.js"></script>
         <script src="js/ThreeHelper.js"></script>
         <script src="js/MathHelper.js"></script>
-        <script src="js/daed/3D.js"></script>
+        <script src="lib/on-daed-js/3D.js"></script>
 
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
         <link href="css/bootstrap-responsive.css" rel="stylesheet"/>
@@ -93,7 +93,7 @@
 				var estrelasConstelacao = new THREE.Object3D();
 				var linhaConstelacao = new THREE.Object3D();
 				
-				new THREE.TextureLoader().load( "imgs/texturas/estrela/estrela.png",
+				new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/estrela/estrela.png",
 
 					function (texturaEstrela) {
 						
@@ -104,8 +104,7 @@
 							var p2 = estrelasConstelacao.children[pos2 - 1].position;
 							
 							var material = new THREE.LineBasicMaterial({
-								color: 0xffffff,
-								depthTest: false
+								color: 0xffffff
 							});
 
 							var geometry = new THREE.Geometry();
@@ -124,9 +123,10 @@
 			    r = -r;
                             var mat = new THREE.SpriteMaterial({
                                     map: texturaEstrela,
-                                    color: cor || 0xffffff,
+                                    color: cor || 0x4444CC,
 									side: THREE.DoubleSide,
-									transparent: true
+									transparent: true,
+									depthTest: false
                             });
 
 							var position = MathHelper.sphericalToCartesian(r, asc, dec);
@@ -240,7 +240,24 @@
 						estrelasConstelacao.localToWorld(viewPos);
 
 						controls.target.copy(viewPos);
+						
                     });
+					
+					new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/esfera-celeste/panorama.jpg",
+
+						function (texturaCeu) {
+							var skySphere = new THREE.Mesh(
+								new THREE.SphereGeometry(5000, 64, 32),
+								new THREE.MeshBasicMaterial({
+										side: THREE.BackSide,
+										map: texturaCeu
+									})
+							);
+							
+							skySphere.rotation.z = Math.PI / 2;
+							
+							scene.add(skySphere);
+						});
 				
             }, function (cameraControl, renderer, scene, camera, stats, clock) {
 			
