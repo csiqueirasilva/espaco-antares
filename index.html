@@ -119,6 +119,7 @@
                         var rad = Math.PI / 180;
 
                         function estrela (r, asc, dec, mag, tam, cor) {
+			    r = -r;
                             var mat = new THREE.SpriteMaterial({
                                     map: texturaEstrela,
                                     color: cor || 0xffffff,
@@ -224,11 +225,19 @@
 
 						wrapperConstelacao.add(estrelasConstelacao);
 						wrapperConstelacao.add(linhaConstelacao);
+							
+						wrapperConstelacao.rotation.x = -Math.PI * 1.1;
+
+						scene.add(wrapperConstelacao);
+
+						scene.updateMatrixWorld();
 						
-                        scene.add(wrapperConstelacao);
-						
-						controls.target.copy(pos);
-						
+						var viewPos = new THREE.Vector3();
+						viewPos.copy(pos);
+
+						estrelasConstelacao.localToWorld(viewPos);
+
+						controls.target.copy(viewPos);
                     });
 				
             }, function (cameraControl, renderer, scene, camera, stats, clock) {
