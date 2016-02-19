@@ -96,7 +96,9 @@
 				new THREE.TextureLoader().load( "imgs/texturas/estrela/estrela.png",
 
 					function (texturaEstrela) {
-                    
+						
+						var maxEstrelaTamanho = 3.5;
+						
 						function linha(pos1, pos2) {
 							var p1 = estrelasConstelacao.children[pos1 - 1].position;
 							var p2 = estrelasConstelacao.children[pos2 - 1].position;
@@ -133,7 +135,7 @@
 							
                             o.position.copy(position);
 							
-                            o.scale.multiplyScalar((o.position.length() / 16) * tam);
+                            o.scale.multiplyScalar((o.position.length() / 16) * tam / maxEstrelaTamanho);
 
                             estrelasConstelacao.add(o);
 							
@@ -145,38 +147,38 @@
 						}
 						
 						// 01  530.34 2.60 Acrab     16 05 26.24 -19 48 19.9 Estrela Dupla
-                        estrela(530.34, ON_DAED.tempoSideralRadiano(16, 5, 26.24) * rad, -grauMinSec(19, 48, 19.9) * rad, 2.6, 1);
+                        estrela(530.34, ON_DAED.tempoSideralRadiano(16, 5, 26.24) * rad, -grauMinSec(19, 48, 19.9) * rad, 2.6, 1.3);
 						
 						// 02  401.67 2.35 Dschubba  16 00 20.00 -22 37 19.0 Estrela variavel eruptiva, estrela dupla (GCAS)
-						estrela(401.67, ON_DAED.tempoSideralRadiano(16, 0, 20) * rad, -grauMinSec(22, 37, 19) * rad, 2.35, 1);
+						estrela(401.67, ON_DAED.tempoSideralRadiano(16, 0, 20) * rad, -grauMinSec(22, 37, 19) * rad, 2.35, 1.5);
 						
 						// 03  585.56 2.85 n Sco     15 58 51.12 -26  6 51.0 Sistema binario eclipsante (EB)
-						estrela(585.56, ON_DAED.tempoSideralRadiano(15, 58, 51.12) * rad, -grauMinSec(26, 6, 51) * rad, 2.85, 1);
+						estrela(585.56, ON_DAED.tempoSideralRadiano(15, 58, 51.12) * rad, -grauMinSec(26, 6, 51) * rad, 2.85, 1.2);
 						
 						// 04  734.59 3.05 Al Niyat  16 21 11.31 -25 35 34.4 Estrela variavel pulsante, estrela dupla (BCEP)
-						estrela(734.59, ON_DAED.tempoSideralRadiano(16, 21, 11.31) * rad, -grauMinSec(25, 35, 34.4) * rad, 3.05, 1);
+						estrela(734.59, ON_DAED.tempoSideralRadiano(16, 21, 11.31) * rad, -grauMinSec(25, 35, 34.4) * rad, 3.05, 1.1);
 
 						linha(1, 4);
 						linha(2, 4);
 						linha(3, 4);
 						
 						// 05  553.75 1.05 Antares   16 29 24.46 -26 25 55.6 Estrela
-						estrela(553.75, ON_DAED.tempoSideralRadiano(16, 29, 24.46) * rad, -grauMinSec(26, 25, 55.6) * rad, 1.05, 1, 0xff0000);						
+						estrela(553.75, ON_DAED.tempoSideralRadiano(16, 29, 24.46) * rad, -grauMinSec(26, 25, 55.6) * rad, 1.05, 3.5, 0xff0000);						
 						
 						linha(4, 5);
 						
 						// Alniyat
-						estrela(474.06, ON_DAED.tempoSideralRadiano(16, 35, 52.95) * rad, -grauMinSec(28, 12, 58.1) * rad, 2.80, 1);
+						estrela(474.06, ON_DAED.tempoSideralRadiano(16, 35, 52.95) * rad, -grauMinSec(28, 12, 58.1) * rad, 2.80, 1.3);
 
 						linha(5, 6);
 						
 						// E Sco
-						var pos = estrela(63.71, ON_DAED.tempoSideralRadiano(16, 50, 9.05) * rad, -grauMinSec(34, 17, 42.7) * rad, 2.25, 1);
+						var pos = estrela(63.71, ON_DAED.tempoSideralRadiano(16, 50, 9.05) * rad, -grauMinSec(34, 17, 42.7) * rad, 2.25, 1.6);
 
 						linha(6, 7);
 						
 						// Mi1 Sco
-						estrela(501.01, ON_DAED.tempoSideralRadiano(16, 51, 52.24) * rad, -grauMinSec(38, 2, 50.8) * rad, 3.00, 1);
+						estrela(501.01, ON_DAED.tempoSideralRadiano(16, 51, 52.24) * rad, -grauMinSec(38, 2, 50.8) * rad, 3.00, 1.2);
 						
 						linha(7, 8);
 						
@@ -186,32 +188,32 @@
 						linha(8, 9);						
 						
 						// Ni Sco
-						estrela(73.48, ON_DAED.tempoSideralRadiano(17, 12, 9.16) * rad, -grauMinSec(43, 14, 26.4) * rad, 3.30, 1);
+						estrela(73.48, ON_DAED.tempoSideralRadiano(17, 12, 9.16) * rad, -grauMinSec(43, 14, 26.4) * rad, 3.30, 1.1);
 
 						linha(9, 10);						
 						
 						// Girtab
-						estrela(272.02, ON_DAED.tempoSideralRadiano(17, 37, 19.14) * rad, -grauMinSec(42, 59, 52.2) * rad, 1.85, 1);
+						estrela(272.02, ON_DAED.tempoSideralRadiano(17, 37, 19.14) * rad, -grauMinSec(42, 59, 52.2) * rad, 1.85, 1.9);
 						
 						linha(10, 11);
 						
 						// i1 Sco
-						estrela(1929.92, ON_DAED.tempoSideralRadiano(17, 47, 35.09) * rad, -grauMinSec(40, 7, 37.3) * rad, 2.95, 1);
+						estrela(1929.92, ON_DAED.tempoSideralRadiano(17, 47, 35.09) * rad, -grauMinSec(40, 7, 37.3) * rad, 2.95, 1.2);
 
 						linha(11, 12);												
 						
 						// k Sco
-						estrela(483.19, ON_DAED.tempoSideralRadiano(17, 42, 29.27) * rad, -grauMinSec(39, 1, 48.4) * rad, 2.35, 1);
+						estrela(483.19, ON_DAED.tempoSideralRadiano(17, 42, 29.27) * rad, -grauMinSec(39, 1, 48.4) * rad, 2.35, 1.5);
 
 						linha(12, 13);												
 						
 						// Shaula
-						estrela(571.20, ON_DAED.tempoSideralRadiano(17, 33, 36.53) * rad, -grauMinSec(37, 6, 14.3) * rad, 1.6, 1);
+						estrela(571.20, ON_DAED.tempoSideralRadiano(17, 33, 36.53) * rad, -grauMinSec(37, 6, 14.3) * rad, 1.6, 2.2);
 
 						linha(13, 14);						
 						
 						// Lesath
-						estrela(576.25, ON_DAED.tempoSideralRadiano(17, 30, 45.86) * rad, -grauMinSec(37, 17, 45.4) * rad, 2.7, 1);
+						estrela(576.25, ON_DAED.tempoSideralRadiano(17, 30, 45.86) * rad, -grauMinSec(37, 17, 45.4) * rad, 2.7, 1.3);
 						
 						linha(14, 15);						
 						
