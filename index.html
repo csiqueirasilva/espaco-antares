@@ -67,6 +67,7 @@
 		<div id="info-div">
 			<div id="info-distance"></div>
 			<div id="star-distance" style="display: none;"></div>
+			<div>Distância média entre Terra e Sol é de 150,000,000 km (Equivalente a aproximadamente 0.0000159 ano-luz)</div>
 		</div>
 		
 		<button id="reset-view" class="btn btn-primary">Visualização da Terra</button>
@@ -110,12 +111,12 @@
 				
 				var STRINGS = {
 					"BR": {
-						STAR_DISTANCE: "Distância entre as estrelas %s1 e %s2: %f1 anos luz. Equivalente a %f2 viagens de ida e volta da Terra ao Sol."
+						STAR_DISTANCE: "Distância entre as estrelas %s1 e %s2: %f1 anos-luz (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)"
 					}
 				};
 				
-				var HalfUAEquivLightYear = 63241.1 / 2;
-
+				var meioAnoLuzUAEquiv = 31620.5;
+				
 				// src: http://stackoverflow.com/questions/5731193/how-to-format-numbers-using-javascript
 				function formatNumber(number)
 				{
@@ -139,7 +140,7 @@
 						function updateDistanceStars() {
 							var o = $('#star-distance');
 							var size = lastClick[0].position.clone().add(lastClick[1].position.clone().negate()).length();
-							o.html(STRINGS.BR.STAR_DISTANCE.replace("%s1", lastClick[0].name).replace("%s2", lastClick[1].name).replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * HalfUAEquivLightYear)));
+							o.html(STRINGS.BR.STAR_DISTANCE.replace("%s1", lastClick[0].name).replace("%s2", lastClick[1].name).replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * meioAnoLuzUAEquiv)));
 							o.show();
 						}
 						
