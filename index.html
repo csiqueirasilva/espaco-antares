@@ -92,6 +92,7 @@
                 var wrapperConstelacao = new THREE.Object3D();
 				var estrelasConstelacao = new THREE.Object3D();
 				var linhaConstelacao = new THREE.Object3D();
+				var accPos = new THREE.Vector3();
 				
 				new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/estrela/estrela.png",
 
@@ -118,10 +119,12 @@
 						}
 					
                         var rad = Math.PI / 180;
-
-                        function estrela (r, asc, dec, mag, tam, cor) {
-			    r = -r;
-                            var mat = new THREE.SpriteMaterial({
+						
+						function estrela (r, asc, dec, mag, tam, cor) {
+							
+							r = -r;
+                            
+							var mat = new THREE.SpriteMaterial({
                                     map: texturaEstrela,
                                     color: cor || 0x4444CC,
 									side: THREE.DoubleSide,
@@ -134,6 +137,8 @@
 							var o = new THREE.Sprite(mat);
 							
                             o.position.copy(position);
+							
+							accPos.add(position);
 							
                             o.scale.multiplyScalar((o.position.length() / 8) * tam / maxEstrelaTamanho);
 
@@ -234,8 +239,10 @@
 
 						scene.updateMatrixWorld();
 						
+						accPos.multiplyScalar(1/estrelasConstelacao.children.length);
+						
 						var viewPos = new THREE.Vector3();
-						viewPos.copy(pos);
+						viewPos.copy(accPos);
 
 						estrelasConstelacao.localToWorld(viewPos);
 
