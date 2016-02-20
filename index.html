@@ -200,14 +200,25 @@
 							
 							estrelasConstelacao.add(o);
 							
-							o.intersectRadius = tam * 1.25;
+							o.IntersectCallback = {};
 							
-							o.intersectClickCallback = function (intersect) {
+							o.IntersectCallback.intersectRadius = tam * 1.25;
+
+							o.IntersectCallback['mousemove'] = function (intersect) {
+								if(intersect.distance <= this.intersectRadius) {
+									document.body.style.cursor = "pointer";
+								} else {
+									document.body.style.cursor = "default";
+								}
+							};
+							
+							o.IntersectCallback['click'] = function (intersect) {
+
 								if(intersect.distance <= this.intersectRadius) {
 								
-									if(lastClick[0] !== this) {
+									if(lastClick[0] !== intersect.object) {
 										lastClick[1] = lastClick[0];
-										lastClick[0] = this;
+										lastClick[0] = intersect.object;
 										
 										if(lastClick[1] && lastClick[0]) {
 											updateDistanceStars();
@@ -219,7 +230,7 @@
 							
 							return o.position;
                         }
-
+						
 						function grauMinSec(g, m, s) {
 							return g + m / 60 + s / 3600;
 						}
@@ -321,8 +332,11 @@
 
 						controls.maxDistance = skySphereRadius * 0.9;
 						
-						ThreeHelper.Intersect.AddClick(estrelasConstelacao.children, camera);
+						ThreeHelper.Intersect.Add(estrelasConstelacao.children, camera);
 
+						ThreeHelper.Intersect.BindClick();
+						ThreeHelper.Intersect.BindMouseMove();
+						
 						function posTerra() {
 							camera.position.set(0, 0, 0);
 							controls.target.copy(viewPos);
