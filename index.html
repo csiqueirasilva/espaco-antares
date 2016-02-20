@@ -51,6 +51,12 @@
 				font-weight: bold;
 			}
 			
+			#reset-view {
+				position: absolute;
+				bottom: 1%;
+				left: 1%;
+			}
+			
         </style>
 
     </head>
@@ -62,6 +68,8 @@
 			<div id="info-distance"></div>
 			<div id="star-distance" style="display: none;"></div>
 		</div>
+		
+		<button id="reset-view" class="btn btn-primary">Visualização da Terra</button>
 		
         <script type="text/javascript">
  
@@ -304,11 +312,16 @@
 
 						controls.maxDistance = skySphereRadius * 0.9;
 						
-						controls.target.copy(viewPos);
-						
 						ThreeHelper.Intersect.AddClick(estrelasConstelacao.children, camera);
 
-						console.log(estrelasConstelacao.children);
+						function posTerra() {
+							camera.position.set(0, 0, 0);
+							controls.target.copy(viewPos);
+						}
+						
+						posTerra();
+						
+						$('#reset-view').click(posTerra);
 						
                     });
 					
