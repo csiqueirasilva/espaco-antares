@@ -346,6 +346,29 @@
 						
 						$('#reset-view').click(posTerra);
 						
+						// add solar system reference
+						
+						var matSol = new THREE.SpriteMaterial({
+							map: texturaEstrela,
+							color: 0xFFFF00,
+							side: THREE.DoubleSide,
+							transparent: true,
+							depthTest: false
+						});
+
+						var sol = new THREE.Sprite(matSol);
+						var textoSol = ThreeHelper.Sprite.FromText('SISTEMA SOLAR');
+						var objetoSol = new THREE.Object3D();
+						
+						sol.scale.multiplyScalar(10);
+						
+						textoSol.position.y = -3;
+						
+						objetoSol.add(textoSol);
+						objetoSol.add(sol);
+						
+						scene.add(objetoSol);
+							
                     });
 					
 					new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/esfera-celeste/panorama.jpg",
