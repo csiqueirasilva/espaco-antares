@@ -81,6 +81,36 @@
 			
 			var controls = null;
 			
+			var meioAnoLuzUAEquiv = 31620.5;
+			
+			// src: http://stackoverflow.com/questions/5731193/how-to-format-numbers-using-javascript
+			function formatNumber(number)
+			{
+				var number = number.toFixed(2) + '';
+				var x = number.split('.');
+				var x1 = x[0];
+				var x2 = x.length > 1 ? '.' + x[1] : '';
+				var rgx = /(\d+)(\d{3})/;
+				while (rgx.test(x1)) {
+					x1 = x1.replace(rgx, '$1' + ',' + '$2');
+				}
+				return x1 + x2;
+			}
+			
+			var STRINGS = {
+				"BR": {
+					STAR_DISTANCE: "Distância entre as estrelas %s1 e %s2: %f1 anos-luz (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)",
+					USER_DISTANCE: "Você está a %f1 anos-luz da Terra (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)"
+				}
+			};
+			
+			var LANG = "BR";
+			
+			function updateInfoDistance(size) {
+				var o = $('#info-distance');
+				o.html(STRINGS[LANG].USER_DISTANCE.replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * meioAnoLuzUAEquiv)));
+			}
+			
             ON_DAED["3D"].create(function (scene, camera) {
 			
                 /*
@@ -109,28 +139,6 @@
 				var skySphereRadius = 5000;
 				var lastClick = [];
 				
-				var STRINGS = {
-					"BR": {
-						STAR_DISTANCE: "Distância entre as estrelas %s1 e %s2: %f1 anos-luz (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)"
-					}
-				};
-				
-				var meioAnoLuzUAEquiv = 31620.5;
-				
-				// src: http://stackoverflow.com/questions/5731193/how-to-format-numbers-using-javascript
-				function formatNumber(number)
-				{
-					var number = number.toFixed(2) + '';
-					var x = number.split('.');
-					var x1 = x[0];
-					var x2 = x.length > 1 ? '.' + x[1] : '';
-					var rgx = /(\d+)(\d{3})/;
-					while (rgx.test(x1)) {
-						x1 = x1.replace(rgx, '$1' + ',' + '$2');
-					}
-					return x1 + x2;
-				}
-				
 				new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/estrela/estrela.png",
 
 					function (texturaEstrela) {
@@ -140,7 +148,7 @@
 						function updateDistanceStars() {
 							var o = $('#star-distance');
 							var size = lastClick[0].position.clone().add(lastClick[1].position.clone().negate()).length();
-							o.html(STRINGS.BR.STAR_DISTANCE.replace("%s1", lastClick[0].name).replace("%s2", lastClick[1].name).replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * meioAnoLuzUAEquiv)));
+							o.html(STRINGS[LANG].STAR_DISTANCE.replace("%s1", lastClick[0].name).replace("%s2", lastClick[1].name).replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * meioAnoLuzUAEquiv)));
 							o.show();
 						}
 						
@@ -347,6 +355,8 @@
                 cameraControl.update();
 
                 ON_DAED["3D"].update();
+
+				updateInfoDistance(camera.position.length());
 
                 renderer.render(scene, camera);
 				
