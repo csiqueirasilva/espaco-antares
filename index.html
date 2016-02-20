@@ -42,6 +42,15 @@
                 margin: 0 auto;
             }
 
+			#info-div {
+				position: absolute;
+				top: 1%;
+				left: 1%;
+				background: rgba(255, 255, 255, 0.75);
+				padding: 1%;
+				font-weight: bold;
+			}
+			
         </style>
 
     </head>
@@ -49,6 +58,11 @@
     <body>
         <noscript><h2 style="color: #ff0000">Javascript desativado! Esse site precisa de Javascript para funcionar.</h2></noscript>
 
+		<div id="info-div">
+			<div id="info-distance"></div>
+			<div id="star-distance" style="display: none;"></div>
+		</div>
+		
         <script type="text/javascript">
  
             var element = document.body;
@@ -84,12 +98,42 @@
 				var linhaConstelacao = new THREE.Object3D();
 				var accPos = new THREE.Vector3();
 				var skySphereRadius = 5000;
+				var lastClick = [];
+				
+				var STRINGS = {
+					"BR": {
+						STAR_DISTANCE: "Distância entre as estrelas %s1 e %s2: %f1 anos luz. Equivalente a %f2 viagens de ida e volta da Terra ao Sol."
+					}
+				};
+				
+				var HalfUAEquivLightYear = 63241.1 / 2;
+
+				// src: http://stackoverflow.com/questions/5731193/how-to-format-numbers-using-javascript
+				function formatNumber(number)
+				{
+					var number = number.toFixed(2) + '';
+					var x = number.split('.');
+					var x1 = x[0];
+					var x2 = x.length > 1 ? '.' + x[1] : '';
+					var rgx = /(\d+)(\d{3})/;
+					while (rgx.test(x1)) {
+						x1 = x1.replace(rgx, '$1' + ',' + '$2');
+					}
+					return x1 + x2;
+				}
 				
 				new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/estrela/estrela.png",
 
 					function (texturaEstrela) {
 						
 						var maxEstrelaTamanho = 3.5;
+						
+						function updateDistanceStars() {
+							var o = $('#star-distance');
+							var size = lastClick[0].position.clone().add(lastClick[1].position.clone().negate()).length();
+							o.html(STRINGS.BR.STAR_DISTANCE.replace("%s1", lastClick[0].name).replace("%s2", lastClick[1].name).replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * HalfUAEquivLightYear)));
+							o.show();
+						}
 						
 						function linha(pos1, pos2) {
 							var p1 = estrelasConstelacao.children[pos1 - 1].position;
@@ -143,7 +187,16 @@
 							
 							o.intersectClickCallback = function (intersect) {
 								if(intersect.distance <= this.intersectRadius) {
-									console.log(this.name);
+								
+									if(lastClick[0] !== this) {
+										lastClick[1] = lastClick[0];
+										lastClick[0] = this;
+										
+										if(lastClick[1] && lastClick[0]) {
+											updateDistanceStars();
+										}
+									}
+
 								}
 							};
 							
