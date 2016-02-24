@@ -74,6 +74,25 @@
 		
         <script type="text/javascript">
  
+			var textureCircle = (function() {
+				
+				var canvasCircle = document.createElement('canvas');
+				canvasCircle.width = canvasCircle.height = 512;
+
+				var ctx = canvasCircle.getContext('2d');
+
+				ctx.strokeStyle = '#ffffff';
+				ctx.lineWidth = 20;
+				ctx.beginPath();
+				ctx.arc(canvasCircle.width / 2,canvasCircle.height / 2, canvasCircle.height / 2 - 10, 0, 2*Math.PI);
+				ctx.stroke();
+				
+				var texture = new THREE.Texture(canvasCircle);
+				texture.needsUpdate = true;
+				
+				return texture;
+			})();
+			
             var element = document.body;
 
             $(element).height(window.innerHeight);
@@ -99,7 +118,7 @@
 			
 			var STRINGS = {
 				"BR": {
-					STAR_DISTANCE: "Distância entre as estrelas %s1 e %s2: %f1 anos-luz (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)",
+					STAR_DISTANCE: "Distância entre as estrelas <span style='color: #ff0000;'>%s1</span> e <span style='color: #0000ff;'>%s2</span>: %f1 anos-luz (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)",
 					USER_DISTANCE: "Você está a %f1 anos-luz da Terra (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)"
 				}
 			};
@@ -204,6 +223,19 @@
 							
 							o.IntersectCallback.intersectRadius = tam * 1.25;
 
+							o.circleSelection = new THREE.Sprite(new THREE.SpriteMaterial({
+								map: textureCircle,
+								transparent: true,
+								depthTest: false,
+								color: 0xff0000
+							}));
+							
+							o.circleSelection.visible = false;
+							
+							o.add(o.circleSelection);
+							
+							o.circleSelection.scale.multiplyScalar((1 / (tam / maxEstrelaTamanho)) / 2);
+							
 							o.IntersectCallback['mousemove'] = function (intersect) {
 								if(intersect.distance <= this.intersectRadius) {
 									document.body.style.cursor = "pointer";
@@ -217,10 +249,18 @@
 								if(intersect.distance <= this.intersectRadius) {
 								
 									if(lastClick[0] !== intersect.object) {
+										if(lastClick[1]) {
+											lastClick[1].circleSelection.visible = false;
+										}
+										
 										lastClick[1] = lastClick[0];
 										lastClick[0] = intersect.object;
 										
+										lastClick[0].circleSelection.visible = true;										
+										lastClick[0].circleSelection.material.color.setHex(0xff0000);
+										
 										if(lastClick[1] && lastClick[0]) {
+											lastClick[1].circleSelection.material.color.setHex(0x0000ff);
 											updateDistanceStars();
 										}
 									}
