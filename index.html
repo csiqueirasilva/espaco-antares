@@ -51,10 +51,17 @@
 				font-weight: bold;
 			}
 			
-			#reset-view {
+			#menu-ops {
 				position: absolute;
 				bottom: 1%;
 				left: 1%;
+				background: rgba(255, 255, 255, 0.75);
+				padding: 1%;
+				font-weight: bold;
+			}
+			
+			#menu-ops .checkbox {
+				margin-top: 0px;
 			}
 			
         </style>
@@ -70,9 +77,21 @@
 			<div>Distância média entre Terra e Sol é de 150.000.000 km (Equivalente a aproximadamente 0.0000159 ano-luz)</div>
 		</div>
 		
-		<button id="reset-view" class="btn btn-primary">Visualização da Terra</button>
+		<div id="menu-ops">
+			<div id="toggle-box" class="checkbox">
+				<label>
+					<input type="checkbox" />
+					Exibir caixa de referência
+				</label>
+			</div>
+			<button id="reset-view" class="btn btn-primary">Visualização da Terra</button>
+		</div>
 		
         <script type="text/javascript">
+ 
+			$('#toggle-box').click(function () {
+				window.toggleReferenceCube($(this).find('input[type=checkbox]').is(':checked'));
+			});
  
 			var textureCircle = (function() {
 				
@@ -91,6 +110,7 @@
 				texture.needsUpdate = true;
 				
 				return texture;
+				
 			})();
 			
             var element = document.body;
@@ -350,7 +370,17 @@
 						wrapperConstelacao.add(linhaConstelacao);
 							
 						wrapperConstelacao.rotation.x = -Math.PI * 1.1;
-
+						
+						var geometry = new THREE.BoxGeometry( 450, 490, 1900 );
+						var material = new THREE.MeshBasicMaterial( {transparent: true, opacity: 0.2, wireframe: false, color: 0x00ff00, side: THREE.BackSide} );
+						var refCube = new THREE.Mesh( geometry, material );
+						
+						var egh = new THREE.EdgesHelper( refCube, 0x00ffff );
+						egh.material.linewidth = 2;
+						scene.add( egh );
+						
+						wrapperConstelacao.add( refCube );
+						
 						scene.add(wrapperConstelacao);
 
 						scene.updateMatrixWorld();
@@ -373,6 +403,9 @@
 							camera.position.set(0, 0, 0);
 							controls.target.copy(viewPos);
 						}
+						
+						refCube.position.copy(accPos.clone().multiplyScalar(1.9));
+						refCube.lookAt(new THREE.Vector3());
 						
 						posTerra();
 						
@@ -400,7 +433,13 @@
 						objetoSol.add(sol);
 						
 						scene.add(objetoSol);
-							
+						
+						window.toggleReferenceCube = function (op) {
+							refCube.visible = op;
+							egh.visible = op;
+						};
+						
+						window.toggleReferenceCube(false);
                     });
 					
 					new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/esfera-celeste/panorama.jpg",
