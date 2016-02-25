@@ -78,6 +78,12 @@
 		</div>
 		
 		<div id="menu-ops">
+			<div id="toggle-axis" class="checkbox">
+				<label>
+					<input type="checkbox" />
+					Exibir eixo de referência (<span style="color: #f00;">X</span><span style="color: #0f0;">Y</span><span style="color: #00f;">Z</span>)
+				</label>
+			</div>
 			<div id="toggle-box" class="checkbox">
 				<label>
 					<input type="checkbox" />
@@ -92,7 +98,11 @@
 			$('#toggle-box').click(function () {
 				window.toggleReferenceCube($(this).find('input[type=checkbox]').is(':checked'));
 			});
- 
+
+			$('#toggle-axis').click(function () {
+				window.toggleReferenceAxis($(this).find('input[type=checkbox]').is(':checked'));
+			});
+			
 			var textureCircle = (function() {
 				
 				var canvasCircle = document.createElement('canvas');
@@ -411,6 +421,9 @@
 						
 						$('#reset-view').click(posTerra);
 						
+						var axis = MathHelper.buildAxes(10000);
+						scene.add(axis);
+						
 						// add solar system reference
 						
 						var matSol = new THREE.SpriteMaterial({
@@ -440,6 +453,12 @@
 						};
 						
 						window.toggleReferenceCube(false);
+						
+						window.toggleReferenceAxis = function (op) {
+							axis.visible = op;
+						};
+						
+						window.toggleReferenceAxis(false);
                     });
 					
 					new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/esfera-celeste/panorama.jpg",
