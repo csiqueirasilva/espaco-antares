@@ -64,6 +64,10 @@
 				margin-top: 0px;
 			}
 			
+			.tooltip-inner {
+				width: 250px; 
+			}
+			
         </style>
 
     </head>
@@ -74,7 +78,7 @@
 		<div id="info-div">
 			<div id="info-distance"></div>
 			<div id="star-distance" style="display: none;"></div>
-			<div>Distância média entre Terra e Sol é de 150.000.000 km (Equivalente a aproximadamente 0.0000159 ano-luz)</div>
+			<div>Distância média entre Terra e Sol é de 150.000.000 km <span data-toggle="tooltip" data-placement="right" title="Equivalente a aproximadamente 0.0000159 ano-luz" class="glyphicon glyphicon-question-sign"></span></div>
 		</div>
 		
 		<div id="menu-ops">
@@ -148,16 +152,24 @@
 			
 			var STRINGS = {
 				"BR": {
-					STAR_DISTANCE: "Distância entre as estrelas <span style='color: #ff0000;'>%s1</span> e <span style='color: #0000ff;'>%s2</span>: %f1 anos-luz (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)",
-					USER_DISTANCE: "Você está a %f1 anos-luz da Terra (Equivalente a %f2 viagens de ida e volta da Terra ao Sol)"
+					STAR_DISTANCE: "Distância entre as estrelas <span id='star-distance-s1' style='color: #ff0000;'>%s1</span> e <span id='star-distance-s2' style='color: #0000ff;'>%s2</span>: <span id='star-distance-f1'>%f1</span> anos-luz <span id='star-distance-f2' data-toggle='tooltip' data-placement='right' title='' base-title='Equivalente a %f2 viagens de ida e volta da Terra ao Sol' class='glyphicon glyphicon-question-sign'></span>",
+					USER_DISTANCE: "Você está a <span id='user-distance-f1'>%f1</span> anos-luz da Terra <span id='user-distance-f2' data-toggle='tooltip' data-placement='right' title='' base-title='Equivalente a %f2 viagens de ida e volta da Terra ao Sol' class='glyphicon glyphicon-question-sign'></span>"
 				}
 			};
 			
 			var LANG = "BR";
-			
+
+			$('#info-distance').html(STRINGS[LANG].USER_DISTANCE);
+			$('#star-distance').html(STRINGS[LANG].STAR_DISTANCE);
+
 			function updateInfoDistance(size) {
-				var o = $('#info-distance');
-				o.html(STRINGS[LANG].USER_DISTANCE.replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * meioAnoLuzUAEquiv)));
+				$('#user-distance-f1').html(formatNumber(size));
+				
+				var newF2 = $('#user-distance-f2').attr('base-title').replace('%f2', formatNumber(size * meioAnoLuzUAEquiv));
+				
+				$('#user-distance-f2')				  
+						.attr('data-original-title', newF2)
+						.tooltip('fixTitle');
 			}
 			
             ON_DAED["3D"].create(function (scene, camera) {
@@ -197,8 +209,19 @@
 						function updateDistanceStars() {
 							var o = $('#star-distance');
 							var size = lastClick[0].position.clone().add(lastClick[1].position.clone().negate()).length();
-							o.html(STRINGS[LANG].STAR_DISTANCE.replace("%s1", lastClick[0].name).replace("%s2", lastClick[1].name).replace("%f1", formatNumber(size)).replace("%f2", formatNumber(size * meioAnoLuzUAEquiv)));
+
+							$('#star-distance-s1').html(lastClick[0].name);
+							$('#star-distance-s2').html(lastClick[1].name);
+							$('#star-distance-f1').html(formatNumber(size));
+																					
+							var newF2 = $('#star-distance-f2').attr('base-title').replace('%f2', formatNumber(size * meioAnoLuzUAEquiv));
+							
+							$('#star-distance-f2')				  
+									.attr('data-original-title', newF2)
+									.tooltip('fixTitle');
+							
 							o.show();
+
 						}
 						
 						function linha(pos1, pos2) {
@@ -505,6 +528,12 @@
                     });
 
             ON_DAED['3D'].START_RENDER();
+
+			$(document).ready(function() {
+			
+				$('[data-toggle="tooltip"]').tooltip(); 
+			
+			});
 
         </script>
 
