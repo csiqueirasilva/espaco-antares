@@ -185,7 +185,7 @@
 				var estrelasConstelacao = new THREE.Object3D();
 				var linhaConstelacao = new THREE.Object3D();
 				var accPos = new THREE.Vector3();
-				var skySphereRadius = 5000;
+				var skySphereRadius = 25000;
 				var lastClick = [];
 				
 				new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/estrela/estrela.png",
@@ -402,7 +402,7 @@
 						
 						estrelasConstelacao.localToWorld(viewPos);
 
-						controls.maxDistance = skySphereRadius * 0.9;
+						controls.maxDistance = skySphereRadius * 0.5;
 						
 						ThreeHelper.Intersect.Add(estrelasConstelacao.children, camera);
 
@@ -483,7 +483,15 @@
 
                 ON_DAED["3D"].update();
 
-				updateInfoDistance(camera.position.length());
+		if(Math.abs(camera.position.x) > controls.maxDistance) {
+			camera.position.x = Math.sign(camera.position.x) * controls.maxDistance;
+		} else if(Math.abs(camera.position.y) > controls.maxDistance) {
+			camera.position.y = Math.sign(camera.position.y) * controls.maxDistance;
+		} else if(Math.abs(camera.position.z) > controls.maxDistance) {
+			camera.position.z = Math.sign(camera.position.z) * controls.maxDistance;
+		}
+
+		updateInfoDistance(camera.position.length());
 
                 renderer.render(scene, camera);
 				
