@@ -491,8 +491,7 @@
                     element,
                     function (camera, renderer) {
                         var oc = new THREE.OrbitControls(camera, element);
-						oc.enableDamping = true;
-						oc.dampingFactor = 0.25;
+						oc.enableDamping = false;
 						controls = oc;
 						return oc;
                     });
