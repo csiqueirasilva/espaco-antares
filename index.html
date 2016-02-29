@@ -344,7 +344,7 @@
 							
 							o.IntersectCallback = {};
 							
-							o.IntersectCallback.intersectRadius = tam * 1.25;
+							o.IntersectCallback.intersectRadius = o.scale.length() / (tam * 8);
 
 							o.circleSelection = new THREE.Sprite(new THREE.SpriteMaterial({
 								map: textureCircle,
