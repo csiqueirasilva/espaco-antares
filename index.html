@@ -562,22 +562,6 @@
 						
 						window.toggleReferenceAxis(false);
                     });
-					
-					new THREE.TextureLoader().load( "lib/on-daed-js/imgs/texturas/esfera-celeste/panorama.jpg",
-
-						function (texturaCeu) {
-							var skySphere = new THREE.Mesh(
-								new THREE.SphereGeometry(skySphereRadius, 64, 32),
-								new THREE.MeshBasicMaterial({
-										side: THREE.BackSide,
-										map: texturaCeu
-									})
-							);
-							
-							skySphere.rotation.z = Math.PI / 2;
-							
-							scene.add(skySphere);
-						});
 				
             }, function (cameraControl, renderer, scene, camera, stats, clock) {
 			
